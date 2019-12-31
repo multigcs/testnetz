@@ -1,0 +1,9 @@
+files/windows/*
+files/osx/*
+files/*/tftp/*
+files/*/http/*
+isoimages/*
+temp/*
+libvirt/images/*
+*.pyc
+__pycache__

@@ -1,0 +1,15 @@
+UI vesamenu.c32
+MENU INCLUDE graphics.conf
+MENU TITLE Select Host to install
+PROMPT 0
+TIMEOUT 0
+
+DEFAULT main
+
+LABEL main
+  MENU LABEL Return to Main Menu...
+  KERNEL vesamenu.c32
+  APPEND pxelinux.cfg/default
+
+MENU SEPARATOR
+

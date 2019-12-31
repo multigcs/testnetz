@@ -1,0 +1,57 @@
+{
+	"hostname": "centos8-pxe",
+	"domainname": "vm.lan",
+	"os": "centos",
+	"target": "pxe",
+	"version": "8",
+	"memory": 2048,
+	"vcpu": 1,
+	"disks": {
+		"vda0": {
+			"size": "10G"
+		}
+	},
+	"services": {
+		"metricbeatclient": {
+			"output": {
+				"type": "logstash",
+				"hosts": ["192.168.122.11:5044"]
+			},
+			"modules": [
+				"system"
+			]
+		},
+		"checkmkagent": {
+			"server": "192.168.122.12"
+		}
+	},
+	"network": {
+		"nameservers": [
+			"192.168.122.1"
+		],
+		"gateway": "192.168.122.1",
+		"interfaces": {
+			"ens17": {
+				"hwaddr": "52:54:00:34:37:02",
+				"bridge": "ovsbr",
+				"ipv4": [
+					{
+						"address": "192.168.122.123",
+						"netmask": "255.255.255.0"
+					}
+				]
+			}
+		}
+	},
+	"users": {
+		"root": {
+			"password": "x",
+			"sshpubkey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxYGIowOHY8viW2Whr8/O5ZPb3bfBMEE6ZLtMkOgAQbBRmqJqYPcc/k1l07d/jhWb7TSPt+za1bL2gfmB6p8KK+S0rBoPJQpZdPeLvuHwSOetW4aOAuS3B7ClcpApmMs63mRfHa6n0bGmANVZ+Rh+7o1vD39GV04JpcohcIsC+zMUVJoZ3QspTp04QsFo1KqKc1tlt7MkO5VzKoP5qIfqBavPNSb0exe+cFv/du5lmQxIQ4l7khVVRnGiSWrNzgvoCslwMotH4ivObPQhBPRJTX0hsu+n9dUfNzQ/thMb8JXKSXXaDVEVG6pqW0xxAnrIMccOk1b4BWWHDIBC9CB2j root@station"
+		},
+		"odippel": {
+			"password": "x"
+		}
+	}
+}
+
+

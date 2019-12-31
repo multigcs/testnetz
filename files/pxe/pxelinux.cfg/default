@@ -1,0 +1,43 @@
+UI vesamenu.c32
+MENU INCLUDE graphics.conf
+MENU TITLE Main Menu
+PROMPT 0
+TIMEOUT 0
+
+DEFAULT install
+
+LABEL install
+  MENU LABEL Installer...
+  KERNEL vesamenu.c32
+  APPEND install.conf
+
+LABEL autoinstall
+  MENU LABEL Autoinstaller...
+  KERNEL vesamenu.c32
+  APPEND autoinstall.conf
+
+LABEL live
+  MENU LABEL Live-Systems...
+  KERNEL vesamenu.c32
+  APPEND live.conf
+
+MENU SEPARATOR
+
+LABEL hdd
+  MENU LABEL Boot from first Harddisk
+  localboot 0x80
+
+LABEL reboot
+  MENU LABEL Reboot
+  KERNEL reboot.c32
+
+MENU SEPARATOR
+
+LABEL hdt
+  MENU LABEL Hardware Detection Tool (hdt)
+  KERNEL hdt.c32
+
+LABEL memtest
+  MENU LABEL Memory Test: Memtest86+
+  KERNEL memtest
+
