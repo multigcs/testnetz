@@ -12,13 +12,28 @@ easy autoinstaller for os tests using libvirt, docker and openvswitch
 * you can also install baremetal-systems using PXE
 
 
-# Warning !!!
+# !!! Warning !!!
 
-this scripts copy files and maybe overwrites files in:
+### this scripts copy files and maybe overwrites files in:
 
 * /var/www/html (./hosts ./install.conf ./openbsd-6.6 -- for post-install scripts and the openbsd-autoinstaller)
 
 * /var/lib/tftpboot (./pxelinux.0 ./pxelinux.cfg/default and many more)
+
+* /etc/dnsmasq.conf (overwrite by init-ovs.sh)
+
+
+### and setup some network devices:
+
+* openvswitch (by init-ovs.sh)
+
+* iface virbr0 will be deactivate (by init-ovs.sh)
+
+* /proc/sys/net/ipv4/ip_forward set to 1 (by init-ovs.sh)
+
+* ovs-vsctl add-br ovsbr and set IP (by init-ovs.sh)
+
+* ovs-vsctl add-br ovsbr2 and set IP (by init-ovs.sh)
 
 
 
@@ -39,6 +54,7 @@ this scripts copy files and maybe overwrites files in:
 
 ### check and run ovs init-script:
 
+ vi init-ovs.sh
  sh init-ovs.sh
 
 
