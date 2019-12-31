@@ -5,6 +5,7 @@
 
 
 ifconfig virbr0 0
+test -e /etc/dnsmasq.conf.bak || mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
 cat <<EOF > /etc/dnsmasq.conf
 interface=ovsbr
 interface=ovsbr2
