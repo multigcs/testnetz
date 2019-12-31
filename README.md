@@ -36,6 +36,18 @@ easy autoinstaller for os tests using libvirt, docker and openvswitch
 * ovs-vsctl add-br ovsbr2 and set IP (by init-ovs.sh)
 
 
+# TODO's
+
+* windows: autoinstaller via PXE (at the moment, only ISO-Autoinstaller works / maybe you must download the .iso file by hand / no fix link)
+
+* freebsd: autoinstaller via PXE (at the moment, only ISO-Autoinstaller works)
+
+* netbsd: autoinstaller (there are no official autoinstaller exist)
+
+* osx: autoinstaller (no install will work)
+
+* all OS's: add more predifined service installer
+
 
 
 # Quickstart
