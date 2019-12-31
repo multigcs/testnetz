@@ -12,10 +12,24 @@ easy autoinstaller for os tests using libvirt, docker and openvswitch
 * you can also install baremetal-systems using PXE
 
 
+# Warning !!!
+
+this scripts copy files and maybe overwrites files in:
+
+* /var/www/html (./hosts ./install.conf ./openbsd-6.6 -- for post-install scripts and the openbsd-autoinstaller)
+
+* /var/lib/tftpboot (./pxelinux.0 ./pxelinux.cfg/default and many more)
+
+
+
 
 # Quickstart
 
 ### install virt-manager, libvirt, tftp-server, dhcp-server, dnsmasq and webserver
+
+#### for PXE-Boot you need to setup your dhcp-server:
+
+* example-file: doc/dhcpd.conf
 
 
 ### starting web-frontend (only for overview - http://127.0.0.1:8082)
