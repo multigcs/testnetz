@@ -217,7 +217,7 @@ def autoseed(hostdata, tempdir, services):
 	autoseed += "\n"
 	autoseed += "## post-script ##\n"
 	if hostdata["target"] == "pxe" and "version" in hostdata:
-		autoseed += "d-i preseed/late_command string in-target wget -O /root/post.sh http://" + hostdata["bootserver"] + "/hosts/" + hostdata["hostid"] + "/post.sh && /bin/sh /root/post.sh\n"
+		autoseed += "d-i preseed/late_command string in-target wget -O /root/post.sh http://" + hostdata["bootserver"] + "/hosts/" + hostdata["hostid"] + "/post.sh; in-target /bin/sh /root/post.sh\n"
 	else:
 		autoseed += "d-i preseed/late_command string in-target /bin/sh /media/cdrom/post.sh\n"
 	autoseed += "\n"
