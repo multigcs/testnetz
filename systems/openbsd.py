@@ -197,7 +197,6 @@ def autoseed(hostdata, tempdir, services):
 		isolinuxtxtnet += "\n"
 		with open(tempdir + "/isolinuxtxt.net", "w") as ofile:
 			ofile.write(isolinuxtxtnet)
-		os.system("rm -rf /var/www/html/" + hostdata["hostid"] + "/services")
 		os.system("mkdir -p /var/www/html/hosts/" + hostdata["hostid"])
 		os.system("cp " + tempdir + "/install.conf /var/www/html/hosts/" + hostdata["hostid"] + "/install.conf")
 		os.system("ln -sf hosts/" + hostdata["hostid"] + "/install.conf /var/www/html/install.conf")

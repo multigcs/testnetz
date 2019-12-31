@@ -349,7 +349,6 @@ def autoseed(hostdata, tempdir, services):
 
 
 	autoseed += "zypper install -y wget\n"
-	os.system("rm -rf /var/www/html/hosts/" + hostdata["hostid"] + "/")
 	os.system("mkdir -p /var/www/html/hosts/" + hostdata["hostid"] + "/services")
 	autoseed += "\n"
 	for service in services:

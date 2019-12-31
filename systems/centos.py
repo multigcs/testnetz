@@ -215,7 +215,6 @@ def autoseed(hostdata, tempdir, services):
 
 
 	postsh += "yum install -y wget\n"
-	os.system("rm -rf /var/www/html/hosts/" + hostdata["hostid"] + "/")
 	os.system("mkdir -p /var/www/html/hosts/" + hostdata["hostid"] + "/services")
 	postsh += "\n"
 	for service in services:

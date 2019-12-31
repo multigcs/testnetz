@@ -135,7 +135,6 @@ def autoseed(hostdata, tempdir, services):
 				autoseed += "\n"
 
 	autoseed += "pkg install -y wget\n"
-	os.system("rm -rf /var/www/html/hosts/" + hostdata["hostid"] + "/services")
 	os.system("mkdir -p /var/www/html/hosts/" + hostdata["hostid"] + "/services")
 	autoseed += "\n"
 	for service in services:
