@@ -33,7 +33,7 @@ easy autoinstaller for os tests using libvirt, docker and openvswitch
  ./init.py -f hosts/ubuntu1910-libvirt.json
 
 
-### prepare pxe boot: (this take a while, downloading some boot-images and kernels for PXE)
+### prepare pxe boot: (this take a while, downloading some boot-images and kernels for PXE / ~900MB)
 
  ./init.py -p
 
@@ -54,3 +54,5 @@ easy autoinstaller for os tests using libvirt, docker and openvswitch
 ![Hosts](doc/hosts.png?raw=true "Hosts")
 
 ![OVS](doc/ovs.png?raw=true "OVS")
+
+![Init](doc/init.png?raw=true "Init")
