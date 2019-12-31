@@ -9,6 +9,15 @@ from ipaddress import IPv4Network
 
 def get_files():
 	files = {}
+	files["isoimages/Win10_1903_V1_German_x64.iso"] = "https://bit.ly/2JX9Mlk"
+	files["files/windows/foobar2000_v1.5.1.exe"] = "https://www.foobar2000.org/getfile/13476fda10d5ce0ee5dde49df6fd3547/foobar2000_v1.5.1.exe"
+	files["files/windows/firefox-setup.exe"] = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/71.0/linux-x86_64/de/firefox-71.0.tar.bz2"
+	files["files/windows/FoxitReader96_L10N_Setup_Prom.exe"] = "http://cdn01.foxitsoftware.com/pub/foxit/reader/desktop/win/9.x/9.7/en_us/FoxitReader97_Setup_Prom_IS.exe"
+	files["files/windows/iview453g_x64_setup.exe"] = "https://download.irfanview.de/iview454g_x64_setup.exe"
+	files["files/windows/LibreOffice_6.3.4_Win_x64.msi"] = "https://mirror1.hs-esslingen.de/pub/Mirrors/tdf/libreoffice/stable/6.3.4/win/x86_64/LibreOffice_6.3.4_Win_x64.msi"
+	files["files/windows/peazip-6.9.0.WIN64.exe"] = "http://rwthaachen.dl.osdn.jp/peazip/72113/peazip-7.0.1.WIN64.exe"
+	files["files/windows/thunderbird-setup.exe"] = "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/68.3.1/win64/de/Thunderbird%20Setup%2068.3.1.exe"
+	files["files/windows/vlc-3.0.8-win64.exe"] = "https://files.vlc.de/vlc/vlc-3.0.8-win64.exe"
 	return files
 
 def pxe(bootserver):
@@ -25,6 +34,16 @@ def autoseed(hostdata, tempdir, services):
 				os.system("wget -O " + hostdata["iso"] + " " + rfiles[hostdata["iso"]])
 			else:
 				return
+
+
+	for rfile in get_files():
+		if rfile.startswith("files/"):
+			if not os.path.exists(rfile):
+				print("  Get missing file: " + rfile + " ...")
+				os.system("mkdir -p " + os.path.dirname(rfile))
+				os.system("wget -O " + rfile + " " + get_files()[rfile])
+
+
 	version = "Windows 10 Pro"
 	orga = "multiXmedia"
 	windomain = "MULTIXMEDIA"
@@ -211,7 +230,7 @@ def autoseed(hostdata, tempdir, services):
 	 "D:\\wintools\\peazip-6.9.0.WIN64.exe /verysilent",
 	 "D:\\wintools\\FoxitReader96_L10N_Setup_Prom.exe /verysilent",
 	 "D:\\wintools\\iview453g_x64_setup.exe /silent",
-	 "D:\\wintools\\LibreOffice_6.3.0_Win_x64.msi /quiet",
+	 "D:\\wintools\\LibreOffice_6.3.4_Win_x64.msi /quiet",
 	]:
 		oobe += "   <SynchronousCommand wcm:action=\"add\">\n"
 		oobe += "    <Order>" + str(cmd_n) + "</Order>\n"
