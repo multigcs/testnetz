@@ -7,11 +7,17 @@ import json
 import mkisofs
 from ipaddress import IPv4Network
 
+# TODO: check install for
+# "D:\\wintools\\foobar2000_v1.4.6.exe /S",
+# "D:\\wintools\\FoxitReader96_L10N_Setup_Prom.exe /verysilent",
+# "D:\\wintools\\iview453g_x64_setup.exe /silent",
+
+
 def get_files():
 	files = {}
 	files["isoimages/Win10_1903_V1_German_x64.iso"] = "https://bit.ly/2JX9Mlk"
 	files["files/windows/foobar2000_v1.5.1.exe"] = "https://www.foobar2000.org/getfile/13476fda10d5ce0ee5dde49df6fd3547/foobar2000_v1.5.1.exe"
-	files["files/windows/firefox-setup.exe"] = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/71.0/linux-x86_64/de/firefox-71.0.tar.bz2"
+	files["files/windows/firefox-setup.exe"] = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/71.0/win64/de/Firefox%20Setup%2071.0.exe"
 	files["files/windows/FoxitReader96_L10N_Setup_Prom.exe"] = "http://cdn01.foxitsoftware.com/pub/foxit/reader/desktop/win/9.x/9.7/en_us/FoxitReader97_Setup_Prom_IS.exe"
 	files["files/windows/iview453g_x64_setup.exe"] = "https://download.irfanview.de/iview454g_x64_setup.exe"
 	files["files/windows/LibreOffice_6.3.4_Win_x64.msi"] = "https://mirror1.hs-esslingen.de/pub/Mirrors/tdf/libreoffice/stable/6.3.4/win/x86_64/LibreOffice_6.3.4_Win_x64.msi"
@@ -222,13 +228,14 @@ def autoseed(hostdata, tempdir, services):
 	cmd_n = 1
 #	 "REG.exe add HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters /v DomainCompatibilityMode /t REG_DWORD /d 1 /f",
 #	 "REG.exe add HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters /v DNSNameResolutionRequired /t REG_DWORD /d 0 /f",
-	for cmd in ["D:\\wintools\\firefox-setup.exe /S",
+	for cmd in [
+	 "D:\\wintools\\firefox-setup.exe /S",
 	 "powershell -ExecutionPolicy Bypass -File D:\\wintools\\ConfigureRemotingForAnsible.ps1",
 	 "msiexec /i D:\\wintools\\check_mk_agent.msi /qn",
 	 "D:\\wintools\\thunderbird-setup.exe /S",
 	 "D:\\wintools\\foobar2000_v1.4.6.exe /S",
 	 "D:\\wintools\\peazip-6.9.0.WIN64.exe /verysilent",
-	 "D:\\wintools\\FoxitReader96_L10N_Setup_Prom.exe /verysilent",
+	 "D:\\wintools\\FoxitReader96_L10N_Setup_Prom.exe /silent",
 	 "D:\\wintools\\iview453g_x64_setup.exe /silent",
 	 "D:\\wintools\\LibreOffice_6.3.4_Win_x64.msi /quiet",
 	]:
