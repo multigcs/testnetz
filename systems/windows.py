@@ -24,7 +24,7 @@ def get_files():
 	files["files/windows/peazip-6.9.0.WIN64.exe"] = "http://rwthaachen.dl.osdn.jp/peazip/72113/peazip-7.0.1.WIN64.exe"
 	files["files/windows/thunderbird-setup.exe"] = "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/68.3.1/win64/de/Thunderbird%20Setup%2068.3.1.exe"
 	files["files/windows/vlc-3.0.8-win64.exe"] = "https://files.vlc.de/vlc/vlc-3.0.8-win64.exe"
-	files["files/windows/tftp/windows-installer-10/winpe.iso"] = "https://hbcd.kuvajmo-blogovski.com/HBCD_PE_x64.iso"
+	#files["files/windows/tftp/windows-installer-10/winpe.iso"] = "https://hbcd.kuvajmo-blogovski.com/HBCD_PE_x64.iso"
 	return files
 
 def pxe(bootserver):
