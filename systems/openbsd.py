@@ -42,7 +42,7 @@ def pxe(bootserver):
 	isolinuxtxtnet = ""
 	for version in ["6.6"]:
 		isolinuxtxtnet += "LABEL openbsd" + version.replace(".", "") + "\n"
-		isolinuxtxtnet += "  MENU LABEL OpenBSD: " + version + "\n"
+		isolinuxtxtnet += "  MENU LABEL OpenBSD-" + version + "\n"
 		isolinuxtxtnet += "  KERNEL pxechn.c32\n"
 		isolinuxtxtnet += "  APPEND openbsd" + version + "/auto_install\n"
 		isolinuxtxtnet += "\n"
@@ -191,7 +191,7 @@ def autoseed(hostdata, tempdir, services):
 	if hostdata["target"] == "pxe" and "version" in hostdata:
 		isolinuxtxtnet = ""
 		isolinuxtxtnet += "LABEL " + hostdata["hostid"] + "\n"
-		isolinuxtxtnet += "  MENU LABEL Autoinstall: " + hostdata["hostid"] + "\n"
+		isolinuxtxtnet += "  MENU LABEL " + hostdata["hostid"] + "\n"
 		isolinuxtxtnet += "  KERNEL pxechn.c32\n"
 		isolinuxtxtnet += "  APPEND openbsd6.6/auto_install\n"
 		isolinuxtxtnet += "\n"

@@ -157,7 +157,7 @@ def autoseed(hostdata, tempdir, services):
 	if hostdata["target"] == "pxe" and "version" in hostdata:
 		isolinuxtxtnet = ""
 		isolinuxtxtnet += "LABEL " + hostdata["hostid"] + "\n"
-		isolinuxtxtnet += "  MENU LABEL Autoinstall: " + hostdata["hostid"] + "\n"
+		isolinuxtxtnet += "  MENU LABEL " + hostdata["hostid"] + "\n"
 		isolinuxtxtnet += "  KERNEL memdisk\n"
 		isolinuxtxtnet += "  APPEND initrd=mfsbsd-10.3-RELEASE-amd64.img harddisk raw\n"
 		isolinuxtxtnet += "\n"

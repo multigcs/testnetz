@@ -332,7 +332,7 @@ def autoseed(hostdata, tempdir, services):
 	if hostdata["target"] == "pxe" and "version" in hostdata:
 		isolinuxtxtnet = ""
 		isolinuxtxtnet += "LABEL " + hostdata["hostid"] + "\n"
-		isolinuxtxtnet += "  MENU LABEL Autoinstall: " + hostdata["hostid"] + "\n"
+		isolinuxtxtnet += "  MENU LABEL " + hostdata["hostid"] + "\n"
 		isolinuxtxtnet += "  KERNEL " + hostdata["os"] + "-installer-" + hostdata["version"] + "/vmlinuz\n"
 		if hostdata["os"] == "fedora":
 			isolinuxtxtnet += "  APPEND initrd=" + hostdata["os"] + "-installer-" + hostdata["version"] + "/initrd.img ip=dhcp inst.repo=" + mirror_base + "/fedora/linux/releases/" + hostdata["version"] + "/Server/x86_64/os/ inst.ks=http://" + hostdata["bootserver"] + "/hosts/" + hostdata["hostid"] + "/ks.cfg\n"
