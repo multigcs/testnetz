@@ -24,10 +24,24 @@ def get_files():
 	files["files/windows/peazip-6.9.0.WIN64.exe"] = "http://rwthaachen.dl.osdn.jp/peazip/72113/peazip-7.0.1.WIN64.exe"
 	files["files/windows/thunderbird-setup.exe"] = "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/68.3.1/win64/de/Thunderbird%20Setup%2068.3.1.exe"
 	files["files/windows/vlc-3.0.8-win64.exe"] = "https://files.vlc.de/vlc/vlc-3.0.8-win64.exe"
+	files["files/windows/tftp/windows-installer-10/winpe.iso"] = "https://hbcd.kuvajmo-blogovski.com/HBCD_PE_x64.iso"
 	return files
 
 def pxe(bootserver):
+	for rfile in get_files():
+		if rfile.startswith("files/"):
+			if not os.path.exists(rfile):
+				print("  Get missing file: " + rfile + " ...")
+				os.system("mkdir -p " + os.path.dirname(rfile))
+				os.system("wget -O " + rfile + " " + get_files()[rfile])
+	os.system("cp -auv files/windows/tftp/* /var/lib/tftpboot/")
 	isolinuxtxtnet = ""
+	isolinuxtxtnet += "LABEL Windows10\n"
+	isolinuxtxtnet += "  MENU LABEL Windows-10\n"
+	isolinuxtxtnet += "  KERNEL memdisk\n"
+	isolinuxtxtnet += "  INITRD windows-installer-10/winpe.iso\n"
+	isolinuxtxtnet += "  APPEND iso raw\n"
+	isolinuxtxtnet += "\n"
 	return isolinuxtxtnet
 
 def autoseed(hostdata, tempdir, services):
@@ -303,6 +317,60 @@ def autoseed(hostdata, tempdir, services):
 	oobe += "</unattend>\n"
 	with open(tempdir + "/Autounattend.xml", "w") as ofile:
 		ofile.write(oobe)
+
+
+
+
+	if hostdata["target"] == "pxe" and "version" in hostdata:
+		isolinuxtxtnet = ""
+		isolinuxtxtnet += "LABEL " + hostdata["hostid"] + "\n"
+		isolinuxtxtnet += "  MENU LABEL " + hostdata["hostid"] + "\n"
+		isolinuxtxtnet += "  KERNEL memdisk\n"
+		isolinuxtxtnet += "  INITRD windows-installer-10/" + hostdata["hostid"] + ".iso\n"
+		isolinuxtxtnet += "  APPEND iso raw\n"
+		isolinuxtxtnet += "\n"
+		with open(tempdir + "/isolinuxtxt.net", "w") as ofile:
+			ofile.write(isolinuxtxtnet)
+
+		startnetcmd = ""
+		#startnetcmd += "mshta \"about:<script>alert('Starting Autoinstall...');close()</script>\"\n"
+		#startnetcmd += "wpeinit\n"
+		startnetcmd += "net use z: \\\\" + hostdata["bootserver"] + "\\install\\windows10\n"
+		startnetcmd += "z:\\setup.exe /unattend:x:\\Autounattend.xml\n"
+		with open(tempdir + "/startnet.cmd", "w") as ofile:
+			ofile.write(startnetcmd)
+
+		copy = {}
+		wimcopy = {
+			"Windows/Web/Wallpaper/Windows/img0.jpg": ["files/pxe/syslinux.png"],
+			"Windows/System32/startnet.cmd": [tempdir + "/startnet.cmd"],
+			"Windows/System32/autorun.cmd": [tempdir + "/startnet.cmd"],
+			"Autounattend.xml": [tempdir + "/Autounattend.xml"],
+		}
+		mkisofs.mkisofs(
+			tempdir,
+			"files/windows/tftp/windows-installer-10/winpe.iso",
+			"/var/lib/tftpboot/windows-installer-10/" + hostdata["hostid"] + ".iso",
+			"WIN10PE",
+			"boot/etfsboot.com",
+			"",
+			"-no-emul-boot -hide boot.bin -hide boot.catalog -udf -J -r -allow-limited-size",
+			copy,
+			wimcopy
+		)
+
+
+		os.system("cat /var/lib/tftpboot/sub.tmpl > /var/lib/tftpboot/autoinstall.conf")
+		os.system("cat temp/*/isolinuxtxt.net >> /var/lib/tftpboot/autoinstall.conf")
+		for interface in hostdata["network"]["interfaces"]:
+			if "ipv4" in hostdata["network"]["interfaces"][interface]:
+				for ipv4 in hostdata["network"]["interfaces"][interface]["ipv4"]:
+					if "hwaddr" in hostdata["network"]["interfaces"][interface]:
+						os.system("cat /var/lib/tftpboot/sub.tmpl > /var/lib/tftpboot/pxelinux.cfg/01-" + hostdata["network"]["interfaces"][interface]["hwaddr"].replace(":", "-"))
+						os.system("echo \"DEFAULT " + hostdata["hostid"] + "\" >> /var/lib/tftpboot/pxelinux.cfg/01-" + hostdata["network"]["interfaces"][interface]["hwaddr"].replace(":", "-"))
+						os.system("cat " + tempdir + "/isolinuxtxt.net >> /var/lib/tftpboot/pxelinux.cfg/01-" + hostdata["network"]["interfaces"][interface]["hwaddr"].replace(":", "-"))
+
+
 
 	if "iso" in hostdata:
 		if not os.path.exists(tempdir + "/auto.iso"):
