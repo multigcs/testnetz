@@ -313,7 +313,7 @@ def boot(hostdata, tempdir, force = False):
 			if "hwaddr" in hostdata["network"]["interfaces"][interface]:
 				lvxml += "      <mac address='" + hostdata["network"]["interfaces"][interface]["hwaddr"] + "'/>\n"
 			lvxml += "      <address type='pci' domain='0x0000' bus='0x00' slot='0x1" + str(slotn) + "' function='0x0'/>\n"
-			lvxml += "      <boot order='3'/>\n"
+			lvxml += "      <boot order='" + str(slotn + 2) + "'/>\n"
 			lvxml += "    </interface>\n"
 			slotn += 1
 		## console ##
