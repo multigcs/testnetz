@@ -38,7 +38,7 @@ easy autoinstaller for os tests using libvirt, docker and openvswitch
 
 # TODO's
 
-* windows: autoinstaller via PXE (at the moment, only ISO-Autoinstaller works / maybe you must download the .iso file by hand / no fix link)
+* windows: missing fix-links to download WinPE iso and some tools
 
 * freebsd: autoinstaller via PXE (at the moment, only ISO-Autoinstaller works)
 
