@@ -213,9 +213,9 @@ def boot(hostdata, tempdir, force = False):
 		lvxml += "    <vmport state='off'/>\n"
 		lvxml += "  </features>\n"
 		## cpu mode ##
-		lvxml += "  <cpu mode='custom' match='exact' check='partial'>\n"
-		lvxml += "    <model fallback='allow'>SandyBridge-IBRS</model>\n"
-		lvxml += "  </cpu>\n"
+#		lvxml += "  <cpu mode='custom' match='exact' check='partial'>\n"
+#		lvxml += "    <model fallback='allow'>SandyBridge-IBRS</model>\n"
+#		lvxml += "  </cpu>\n"
 		lvxml += "  <clock offset='utc'>\n"
 		lvxml += "    <timer name='rtc' tickpolicy='catchup'/>\n"
 		lvxml += "    <timer name='pit' tickpolicy='delay'/>\n"

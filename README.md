@@ -54,6 +54,11 @@ easy autoinstaller for os tests using libvirt, docker and openvswitch
 
 ### install virt-manager, libvirt, tftp-server, dhcp-server, dnsmasq and webserver
 
+# apt-get install qemu virt-manager python3-pip openvswitch-switch atftp isc-dhcp-server apache2 docker.io qemu-kvm net-tools
+# pip3 install blowfish
+# pip3 install isoparser
+
+
 #### for PXE-Boot you need to setup your dhcp-server:
 
 * example-file: doc/dhcpd.conf

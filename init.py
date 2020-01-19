@@ -275,6 +275,12 @@ else:
 						os.system("rm -rf '" + diskimages[disk] + "'")
 
 			## create temp dir ##
+			if not os.path.exists("isoimages"):
+				os.mkdir("isoimages")
+			if not os.path.exists("libvirt"):
+				os.mkdir("libvirt")
+			if not os.path.exists("libvirt/images"):
+				os.mkdir("libvirt/images")
 			if not os.path.exists(tempdir):
 				os.mkdir(tempdir)
 
