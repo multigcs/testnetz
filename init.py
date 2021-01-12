@@ -7,6 +7,7 @@ import sys
 import glob
 import json
 import copy
+import importlib
 
 from systems import ubuntu
 from systems import centos
@@ -21,13 +22,12 @@ from targets import libvirt
 from targets import docker
 from targets import qemu
 
-from services import elk
-from services import metricbeatclient
-from services import checkmkserver
-from services import checkmkagent
-from services import sambapdc
-from services import visansible
-
+servicenames = []
+for servicefile in glob.glob("services/*.py"):
+    servicename = servicefile.split("/")[1].split(".")[0]
+    print(f"importing: {servicename}")
+    exec(f"from services import {servicename}")
+    servicenames.append(servicename)
 
 bootserver = "192.168.122.1"
 
@@ -314,13 +314,8 @@ else:
 		if "services" in hostdata:
 			if not os.path.exists(tempdir + "/services"):
 				os.mkdir(tempdir + "/services")
-			services.append(elk.setup(hostdata, tempdir + "/services"))
-			services.append(metricbeatclient.setup(hostdata, tempdir + "/services"))
-			services.append(checkmkserver.setup(hostdata, tempdir + "/services"))
-			services.append(checkmkagent.setup(hostdata, tempdir + "/services"))
-			services.append(sambapdc.setup(hostdata, tempdir + "/services"))
-			services.append(visansible.setup(hostdata, tempdir + "/services"))
-
+			for servicename in servicenames:
+				exec(f"services.append({servicename}.setup(hostdata, '{tempdir}/services'))")
 
 		## create autoinstaller ##
 		print(" create autoinstaller for " + hostdata["os"] + "")
