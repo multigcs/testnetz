@@ -31,11 +31,12 @@ def boot(hostdata, tempdir, force = False):
 #		print("docker rmi -f " + hostdata["hostname"] + " 2>/dev/null")
 #		os.system("docker rmi -f " + hostdata["hostname"])
 	## build and run ##
+	extraopts = "--no-cache"
 	extraopts = ""
 	print("(cd " + tempdir + "; docker build " + extraopts + " -t " + hostdata["hostname"] + " .)")
 	os.system("(cd " + tempdir + "; docker build " + extraopts + " -t " + hostdata["hostname"] + " .)")
-	print("docker run --cpus='" + str(hostdata["vcpu"]) + "' --memory='" + str(hostdata["memory"]) + "m' --net=none --hostname='" + hostdata["hostname"] + "' --dns='" + dns + "' --dns-search='" + hostdata["domainname"] + "' --name '" + hostdata["hostname"] + "' -d -t -i " + hostdata["hostname"] + "")
-	os.system("docker run --cpus='" + str(hostdata["vcpu"]) + "' --memory='" + str(hostdata["memory"]) + "m' --net=none --hostname='" + hostdata["hostname"] + "' --dns='" + dns + "' --dns-search='" + hostdata["domainname"] + "' --name '" + hostdata["hostname"] + "' -d -t -i " + hostdata["hostname"] + "")
+	print("docker run --privileged --cpus='" + str(hostdata["vcpu"]) + "' --memory='" + str(hostdata["memory"]) + "m' --net=none --hostname='" + hostdata["hostname"] + "' --dns='" + dns + "' --dns-search='" + hostdata["domainname"] + "' --name '" + hostdata["hostname"] + "' -d -t -i " + hostdata["hostname"] + "")
+	os.system("docker run --privileged --cpus='" + str(hostdata["vcpu"]) + "' --memory='" + str(hostdata["memory"]) + "m' --net=none --hostname='" + hostdata["hostname"] + "' --dns='" + dns + "' --dns-search='" + hostdata["domainname"] + "' --name '" + hostdata["hostname"] + "' -d -t -i " + hostdata["hostname"] + "")
 	print("nsenter -n -t $(docker inspect --format {{.State.Pid}} " + hostdata["hostname"] + ") ip route add default via " + hostdata["network"]["gateway"] + "")
 	## ovs network ##
 	for interface in hostdata["network"]["interfaces"]:
