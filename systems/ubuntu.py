@@ -5,6 +5,7 @@
 import os
 import json
 import mkisofs
+import time
 
 
 def get_files():
@@ -301,6 +302,14 @@ def autoseed(hostdata, tempdir, services):
 		for cline in copy.split("\n"):
 			os.system(cline)
 
+	postsh += "# update /etc/hosts #\n"
+	postsh += "mkdir -p /inits\n"
+	for interface in hostdata["network"]["interfaces"]:
+		if "ipv4" in hostdata["network"]["interfaces"][interface]:
+			for ipv4 in hostdata["network"]["interfaces"][interface]["ipv4"]:
+				postsh += "echo 'echo \"" + ipv4["address"] + " " + hostdata["hostname"] + "." + hostdata["domainname"] + " " + hostdata["hostname"] + "\" >> /etc/hosts' >> /inits/01_hostsfile\n"
+	postsh += "\n"
+
 	postsh += "apt-get install -y wget\n"
 	os.system("mkdir -p /var/www/html/hosts/" + hostdata["hostid"] + "/services")
 	postsh += "\n"
@@ -310,7 +319,7 @@ def autoseed(hostdata, tempdir, services):
 			postsh += "wget -O /root/service_" + service.split("/")[-1] + " http://" + hostdata["bootserver"] + "/hosts/" + hostdata["hostid"] + "/services/" + service.split("/")[-1] + " >> /root/service.log 2>&1\n"
 			postsh += "if test -e /root/service_" + service.split("/")[-1] + "\n"
 			postsh += "then\n"
-			postsh += " sh /root/service_" + service.split("/")[-1] + " 2>&1 | tee -a /root/service_" + service.split("/")[-1] + ".log || true\n"
+			postsh += " bash /root/service_" + service.split("/")[-1] + " 2>&1 | tee -a /root/service_" + service.split("/")[-1] + ".log || true\n"
 			postsh += "fi\n"
 			postsh += "\n"
 
@@ -375,20 +384,22 @@ def autoseed(hostdata, tempdir, services):
 	dockerfile += "RUN apt-get update && apt-get -y install iproute2 net-tools iputils-ping\n"
 	dockerfile += "RUN apt-get update && apt-get -y install python3 openssh-server xinetd\n"
 	dockerfile += "\n"
+	dockerfile += f"RUN echo {time.time()}\n"
+	dockerfile += "\n"
 	dockerfile += "COPY postsh /root/post.sh\n"
 	dockerfile += "RUN /bin/sh /root/post.sh\n"
 	dockerfile += "\n"
 	dockerfile += "CMD mkdir -p /var/run/sshd ; /usr/sbin/sshd ; /bin/sh\n"
 	dockerfile += "\n"
-	for service in services:
-		if service != "":
-			dockerfile += "COPY services/" + service.split("/")[-1] + " /root/service_" + service.split("/")[-1] + "\n"
-			dockerfile += "RUN /bin/sh /root/service_" + service.split("/")[-1] + " 2>&1 | tee -a /root/service_" + service.split("/")[-1] + ".log\n"
-			dockerfile += "\n"
+#	for service in services:
+#		if service != "":
+#			dockerfile += "COPY services/" + service.split("/")[-1] + " /root/service_" + service.split("/")[-1] + "\n"
+#			dockerfile += "RUN /bin/bash /root/service_" + service.split("/")[-1] + " 2>&1 | tee -a /root/service_" + service.split("/")[-1] + ".log\n"
+#			dockerfile += "\n"
+#	dockerfile += "\n"
+	dockerfile += "RUN echo '/etc/init.d/xinetd restart\\n/etc/init.d/ssh restart\\nfind /inits/ | sort  | xargs -r -l bash\\n/bin/sh' > /init.sh && chmod 777 /init.sh\n"
 	dockerfile += "\n"
-	dockerfile += "RUN echo '/etc/init.d/xinetd restart\\n/etc/init.d/ssh restart\\n/bin/sh' > /init.sh && chmod 777 /init.sh\n"
-	dockerfile += "\n"
-	dockerfile += "CMD [\"/bin/sh\", \"/init.sh\"]\n"
+	dockerfile += "CMD [\"/bin/bash\", \"/init.sh\"]\n"
 	dockerfile += "\n"
 
 
